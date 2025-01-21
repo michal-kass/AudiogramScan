@@ -27,7 +27,7 @@ Hearing impairments are typically assessed using pure tone audiometry, a diagnos
 
 
 ## Dependencies
-- [ML Kit](ML Kit)
+- [ML Kit](https://developers.google.com/ml-kit/guides)
 - [PyTorch Mobile](https://pytorch.org/mobile/android/)
 - [OpenCV on Android](https://opencv.org/android/)
 - [TensorFlow Lite](https://ai.google.dev/edge/litert/libraries/task_library/overview)
