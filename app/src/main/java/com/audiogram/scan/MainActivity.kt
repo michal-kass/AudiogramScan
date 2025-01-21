@@ -51,6 +51,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.util.Locale
+import java.util.UUID
 import kotlin.math.abs
 
 
@@ -441,7 +443,7 @@ class MainActivity : AppCompatActivity() {
 
             val resultCode = activityResult.resultCode
             val result = GmsDocumentScanningResult.fromActivityResultIntent(activityResult.data)
-            if (resultCode == Activity.RESULT_OK && result != null) {
+            if (resultCode == RESULT_OK && result != null) {
                 Toast.makeText(this@MainActivity, "Photo uploaded", Toast.LENGTH_SHORT).show()
                 mButtonDetect.visibility = View.VISIBLE
 
@@ -626,9 +628,9 @@ class MainActivity : AppCompatActivity() {
                     //mBitmap = newBitmap_right
                     //Glide.with(this).load(newBitmap_left).into(mImageView)
 
-                    val path_left = (File(filesDir, java.util.UUID.randomUUID().toString()
+                    val path_left = (File(filesDir, UUID.randomUUID().toString()
                             +"_left"+ ".jpeg"))
-                    val path_right = (File(filesDir, java.util.UUID.randomUUID().toString()
+                    val path_right = (File(filesDir, UUID.randomUUID().toString()
                             +"_right"+ ".jpeg"))
                     try {
                         val fileOutputStream = FileOutputStream(path_left)
@@ -864,14 +866,18 @@ class MainActivity : AppCompatActivity() {
 
                         println(final_class)
                         if (final_class[0] != ""){
-                        textv.text = final_class[1] + " ear" + "\n" + final_class[0]
+                        textv.text = final_class[1].replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(
+                                Locale.getDefault()
+                            ) else it.toString()
+                        } + " Ear:" + "\n" + final_class[0]
                             }
                         else {
-                            textv.text = final_class[1] + " ear" + "Could not process an audiogram in the photograph. Please take the photograph in good lighting conditions and make sure that the entire audiogram is visible."
+                            textv.text = final_class[1] + " ear:" + "Could not process an audiogram in the photograph. Please take the photograph in good lighting conditions and make sure that the entire audiogram is visible."
                         }
                     }catch(exception: Exception){
-                        (Toast.makeText(this, "Klasyfikacja nieudana", Toast.LENGTH_LONG)).show()
-                        textv.text = final_class[1] + " ear" + "Could not process an audiogram in the photograph. Please take the photograph in good lighting conditions and make sure that the entire audiogram is visible."
+                        (Toast.makeText(this, "Classification failed", Toast.LENGTH_LONG)).show()
+                        textv.text = final_class[1] + " ear:" + "Could not process an audiogram in the photograph. Please take the photograph in good lighting conditions and make sure that the entire audiogram is visible."
 
                     }
 
