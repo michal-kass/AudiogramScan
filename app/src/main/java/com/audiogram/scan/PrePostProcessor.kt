@@ -1,4 +1,4 @@
-package com.example.audiogramclassifier
+package com.audiogram.scan
 
 import android.graphics.Rect
 import java.util.Arrays

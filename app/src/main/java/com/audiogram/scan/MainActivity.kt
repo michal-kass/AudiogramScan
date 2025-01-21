@@ -1,4 +1,4 @@
-package com.example.audiogramclassifier
+package com.audiogram.scan
 
 import android.Manifest
 import android.app.Activity
@@ -27,7 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.example.audiogramclassifier.ml.Hearinglosstypes
+import com.audiogram.scan.ml.Hearinglosstypes
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG

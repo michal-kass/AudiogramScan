@@ -1,12 +1,4 @@
-package com.example.audiogramclassifier;
-
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+package com.audiogram.scan;
 
 import android.content.Context;
 import android.graphics.Canvas;

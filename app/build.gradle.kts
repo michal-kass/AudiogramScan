@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.audiogramclassifier"
+    namespace = "com.audiogram.scan"
     compileSdk = 34
 
     //packaging{
@@ -24,7 +24,7 @@ android {
 
 
     defaultConfig {
-        applicationId = "com.example.audiogramclassifier"
+        applicationId = "com.audiogram.scan"
         minSdk = 28
         targetSdk = 34
         versionCode = 1

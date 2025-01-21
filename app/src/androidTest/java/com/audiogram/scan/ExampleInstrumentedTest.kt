@@ -1,4 +1,4 @@
-package com.example.audiogramclassifier
+package com.audiogram.scan
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,11 +1,10 @@
-package com.example.audiogramclassifier
+package com.audiogram.scan
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
-import android.widget.Toast
 import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -15,8 +14,6 @@ import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
 import java.util.Arrays
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.pow
 
 val dbvalues = arrayOf(

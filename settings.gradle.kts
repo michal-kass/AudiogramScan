@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AudiogramClassifier"
+rootProject.name = "AudiogramScan"
 include(":app")
  

@@ -1,4 +1,4 @@
-package com.example.audiogramclassifier
+package com.audiogram.scan
 
 import org.junit.Test
 
