@@ -1,7 +1,7 @@
 
 # AudiogramScan: an Open Source mobile application for audiometry test result analysis and diagnosis support
 
-Hearing impairments are typically assessed using pure tone audiometry, a diagnostic method that allows for the identification of the degree, type and configuration of hearing loss. The results of this assessment are generally displayed in the form of an audiogram, which graphically represents the softest sounds perceivable by an individual across a range frequencies. 
+Pure tone audiometry diagnoses hearing loss by measuring its degree, type, and configuration. This assessment usually produces an audiogram, which shows the softest sounds a person can hear across a range of frequencies.
 
 AudiogramScan is a mobile application for the Android operating system that allows users to scan and analyse audiograms using a smartphone camera and subsequently classify the type of hearing loss. 
 The application constitutes an advanced AI-driven decision support system developed to be readily accessible to audiologists and otolaryngologists. Its integration in medical facilities presents a substantial opportunity to decrease clinical workload, enhance diagnostic accuracy and reduce the likelihood of human error in hearing loss evaluations, which is particularly important in developing countries.
