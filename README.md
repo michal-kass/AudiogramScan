@@ -13,7 +13,7 @@ The application was tested on a range of smartphones across various price points
 ## Authors
 
 - Michał Kassjański
-- Marcin Kulwiak
+- Marcin Kulawiak
 - Tomasz Przewoźny
 - Dmitry Tretiakow
 - Andrzej Molisz
