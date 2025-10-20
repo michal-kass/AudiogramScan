@@ -328,7 +328,6 @@ class MainActivity : AppCompatActivity() {
 
              audiogram_list = audiogram_det(mBitmap)
             if (audiogram_list.size > 0) {
-                //button_switch.visibility = View.VISIBLE
                 mBitmap = audiogram_list[audiogram_index_selection]
                 Glide.with(this).load(mBitmap).into(mImageView)
             }
@@ -728,7 +727,6 @@ class MainActivity : AppCompatActivity() {
                             for (element in line.elements) {
                                 val elementText = element.text
                                 if (find(dbvalues, elementText) == true) {
-                                    //Log.e("Tekst db",elementText)
                                     val index = dbvalues.indexOf(elementText)
                                     if ( dbvaluesRect[index] == null) {
                                         dbvaluesRect[index] = element.boundingBox
@@ -860,10 +858,8 @@ class MainActivity : AppCompatActivity() {
         var left = 0
         var right = 0
         var side = ""
-        //mButtonDetectSymbols.performClick()
         for(i in results_symbols){
             symbos_count[i.classIndex] ++
-            //println(i?.rect?.toShortString())
         }
         for(i in 0..symbos_count.size-1){
             if(i == 0 || i==4 || i==5 || i ==7){
