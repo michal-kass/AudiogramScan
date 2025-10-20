@@ -277,12 +277,10 @@ class MainActivity : AppCompatActivity() {
         button_classify.visibility = View.INVISIBLE
         button_switch.visibility = View.INVISIBLE
         buttonTest.visibility = View.INVISIBLE
-        //mProgressBar.visibility = ProgressBar.INVISIBLE
 
 
         button_switch.visibility = View.INVISIBLE
 
-        //val result_textview = findViewById<TextView>(R.id.text_results)
         buttonTest.text = "Test Image 1/3"
 
 
@@ -382,48 +380,16 @@ class MainActivity : AppCompatActivity() {
                     mImageView.setImageBitmap(audiogram_list[0])
                     var audiogram_result =
                         analyze_audiograms(audiogram_list[0], mImageView, text_right_results)
-                    //button_switch.performClick()
-                    //text_right_results.text = audiogram_result
+
 
                     mImageView2.setImageBitmap(audiogram_list[1])
                     var audiogram_result2 =
                         analyze_audiograms(audiogram_list[1], mImageView2, text_left_results)
-                    //text_left_results.text = audiogram_result2
                 }
                 mProgressBar.visibility = ProgressBar.INVISIBLE
                 mButtonDetectSymbols.isEnabled = false
 
             }
-
-
-            //val list = arrayListOf<Result>()
-
-
-            //println("co tam jest")
-            //println(audiogram_result[2])
-            //println(audiogram_result[0])
-            //println(audiogram_result[1])
-
-            //val fzvaluesRect_lines = audiogram_result[0] as Array<Rect?>
-            //val dbvaluesRect_full_lines = audiogram_result[1] as Array<Rect?>
-
-
-            //val results_symbols_temp = (audiogram_result[2] as? ArrayList<*>)?.filterIsInstance<Result>()
-            //val results_symbols: ArrayList<Result> = ArrayList<Result>(results_symbols_temp)
-
-
-
-            //println(fzvaluesRect_lines.joinToString(", ", ""))
-
-
-            //var results_symbols : ArrayList<Result> = audiogram_result[1][0]
-            //var fzvaluesRect_lines = audiogram_result[0][0]
-            //var dbvaluesRect_full_lines = audiogram_result[0][1]
-
-
-
-
-
 
 
         })
@@ -588,11 +554,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 if (results.size == 2){
 
-
-
-                    // val resizedBmp: Bitmap = Bitmap.createBitmap(results[0].rect.right-results[0].rect.left,  results[0].rect.bottom-results[0].rect.top,Bitmap.Config.ARGB_8888)
-                    //Canvas(resizedBmp).drawBitmap(mBitmap, -results[0].rect.left.toFloat(), -results[0].rect.top.toFloat(), null);
-                    //Log.e("Rozmar obrazka mBitmap", mBitmap.height.toString())
                     var left_rec = Rect()
                     var right_rec = Rect()
 
@@ -625,8 +586,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-                    //mBitmap = newBitmap_right
-                    //Glide.with(this).load(newBitmap_left).into(mImageView)
 
                     val path_left = (File(filesDir, UUID.randomUUID().toString()
                             +"_left"+ ".jpeg"))
@@ -649,7 +608,6 @@ class MainActivity : AppCompatActivity() {
                     }
 
 
-                    //ResultView.setResults(results)
                     mResultView.invalidate()
                     mResultView.visibility = View.VISIBLE
                 }
@@ -716,7 +674,6 @@ class MainActivity : AppCompatActivity() {
         val outputTuple = mModule_symbols.forward(IValue.from(bin_inputTensor)).toTuple()
         val outputTensor = outputTuple[0].toTensor()
         val outputs = outputTensor.dataAsFloatArray
-//Log.e("test",outputs.size.toString())
         val results = PrePostProcessor.outputsToNMSPredictions(
             5 + 8,
             outputs,
@@ -731,7 +688,6 @@ class MainActivity : AppCompatActivity() {
         val outputTuple_numbers = mModule_numbers.forward(IValue.from(inputTensor)).toTuple()
         val outputTensor_numbers = outputTuple_numbers[0].toTensor()
         val outputs_numbers = outputTensor_numbers.dataAsFloatArray
-//Log.e("test",outputs.size.toString())
         val results_numbers = PrePostProcessor.outputsToNMSPredictions(
             5 + 21,
             outputs_numbers,
@@ -746,16 +702,9 @@ class MainActivity : AppCompatActivity() {
 
         runOnUiThread {
             mButtonDetectSymbols.isEnabled = true
-            //mButtonDetectSymbols.text = "Crazy"
             mProgressBar.visibility = ProgressBar.INVISIBLE
 
-            // val resizedBmp: Bitmap = Bitmap.createBitmap(results[0].rect.right-results[0].rect.left,  results[0].rect.bottom-results[0].rect.top,Bitmap.Config.ARGB_8888)
-            //Canvas(resizedBmp).drawBitmap(mBitmap, -results[0].rect.left.toFloat(), -results[0].rect.top.toFloat(), null);
-            //Log.e("Rozmar obrazka mBitmap", mBitmap.height.toString())
-
-            //newBitmap = Bitmap.createBitmap(mBitmap, results[1].rect.left, results[1].rect.top, results[1].rect.width(), results[1].rect.height())
             bmp2 = mBitmap.copy(mBitmap.config, true)
-            //val bmp3: Bitmap = mBitmap.copy(mBitmap.getConfig(), true)
             results_symbols = results
 
             val canvas = Canvas(bmp2)
@@ -778,11 +727,9 @@ class MainActivity : AppCompatActivity() {
                             val lineFrame = line.boundingBox
                             for (element in line.elements) {
                                 val elementText = element.text
-                                //println(elementText)
                                 if (find(dbvalues, elementText) == true) {
                                     //Log.e("Tekst db",elementText)
                                     val index = dbvalues.indexOf(elementText)
-                                    //Log.e("index",index.toString())
                                     if ( dbvaluesRect[index] == null) {
                                         dbvaluesRect[index] = element.boundingBox
                                         if (element.boundingBox != null) {
@@ -792,10 +739,7 @@ class MainActivity : AppCompatActivity() {
 
                                 }
                                 if (find(fzvalues, elementText) == true) {
-                                    //Log.e("Tekst fz",elementText)
                                     val index = fzvalues.indexOf(elementText)
-                                    //println(elementText)
-                                    //Log.e("index",index.toString())
                                     if (fzvaluesRect[index] == null) {
                                         fzvaluesRect[index] = element.boundingBox
                                         if (element.boundingBox != null) {
@@ -838,7 +782,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
-                    //button_opencv.performClick();
                     var Hlines = hlines(mBitmap)
 
                     filling_gaps_db(dbvaluesRect,bmp2)
@@ -919,7 +862,7 @@ class MainActivity : AppCompatActivity() {
         var side = ""
         //mButtonDetectSymbols.performClick()
         for(i in results_symbols){
-            symbos_count[i?.classIndex!!] ++
+            symbos_count[i.classIndex] ++
             //println(i?.rect?.toShortString())
         }
         for(i in 0..symbos_count.size-1){
@@ -952,15 +895,17 @@ class MainActivity : AppCompatActivity() {
             for (symbol in results_symbols){
 
                 var db_value_list : MutableList<Rect> = arrayListOf()
-                if((Rect.intersects(line!!,symbol!!.rect) || symbol!!.rect.contains(line!!)) && (PrePostProcessor.mClasses_symbols[symbol.classIndex] == "circle" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "cross" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "square" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "triangle")){
-                    var finded_rec = symbol!!.rect
+                if((Rect.intersects(line!!, symbol.rect) || symbol.rect.contains(line)) && (PrePostProcessor.mClasses_symbols[symbol.classIndex] == "circle" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "cross" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "square" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "triangle")){
+                    var finded_rec = symbol.rect
 
 
                     var db_index = 0
                     for (db_value in dbvaluesRect_full_lines){
                         if(db_value != null && finded_rec != null){
-                            if (Rect.intersects(db_value!!,finded_rec) || finded_rec!!.contains(db_value!!)){
-                                db_value_list.add(db_value!!)
+                            if (Rect.intersects(db_value,finded_rec) || finded_rec.contains(
+                                    db_value
+                                )){
+                                db_value_list.add(db_value)
 
                             }
                         }
@@ -968,7 +913,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     if(db_value_list.size == 1){
-                        air_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines!!.indexOf(db_value_list[0])].toInt()
+                        air_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines.indexOf(db_value_list[0])].toInt()
                     }
                     else if(db_value_list.size > 1){
                         var db_temp_index = 0
@@ -981,7 +926,7 @@ class MainActivity : AppCompatActivity() {
 
                             }
                         }
-                        air_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines!!.indexOf(db_value_list[db_temp_index])].toInt()
+                        air_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines.indexOf(db_value_list[db_temp_index])].toInt()
 
 
                     }
@@ -1000,18 +945,18 @@ class MainActivity : AppCompatActivity() {
             }
             for (symbol in results_symbols){
                 var db_value_list : MutableList<Rect> = arrayListOf()
-                if((Rect.intersects(line!!,symbol!!.rect) || symbol!!.rect.contains(line!!))  && (PrePostProcessor.mClasses_symbols[symbol.classIndex] == "close_bracket" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "greater_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "less_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "open_bracket")){
-                    var finded_rec = symbol!!.rect
+                if((Rect.intersects(line!!, symbol.rect) || symbol.rect.contains(line))  && (PrePostProcessor.mClasses_symbols[symbol.classIndex] == "close_bracket" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "greater_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "less_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "open_bracket")){
+                    var finded_rec = symbol.rect
                     var db_index = 0
                     for (db_value in dbvaluesRect_full_lines){
-                        if (Rect.intersects(db_value!!,finded_rec) || finded_rec!!.contains(db_value!!)){
-                            db_value_list.add(db_value!!)
+                        if (Rect.intersects(db_value!!,finded_rec) || finded_rec.contains(db_value)){
+                            db_value_list.add(db_value)
                         }
                         db_index ++
                     }
                     db_index++
                     if(db_value_list.size == 1){
-                        bone_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines!!.indexOf(db_value_list[0])].toInt()
+                        bone_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines.indexOf(db_value_list[0])].toInt()
                     }
                     else if(db_value_list.size > 1){
                         var db_temp_index = 0
@@ -1024,7 +969,7 @@ class MainActivity : AppCompatActivity() {
 
                             }
                         }
-                        bone_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines!!.indexOf(db_value_list[db_temp_index])].toInt()
+                        bone_results[fz_index] = dbvalues_full[dbvaluesRect_full_lines.indexOf(db_value_list[db_temp_index])].toInt()
 
 
                     }
@@ -1039,22 +984,26 @@ class MainActivity : AppCompatActivity() {
                 for(d in 1..avg_dis/2){
                     if(side=="left" && symbos_count[5] == 0) {
                         temp_line?.left = temp_line?.left!! +  1
-                        temp_line?.right = temp_line?.right!! + 1
+                        temp_line.right = temp_line.right!! + 1
                     }
                     else if(side=="left" && symbos_count[5] != 0){
                         temp_line?.left = temp_line?.left!! + 1
-                        temp_line?.right = temp_line?.right!! + 1
+                        temp_line.right = temp_line.right!! + 1
                     }
                     else if(side=="right" ){
                         temp_line?.left = temp_line?.left!! - 1
-                        temp_line?.right = temp_line?.right!! - 1
+                        temp_line.right = temp_line.right!! - 1
                     }
                     for (symbol in results_symbols){
-                        if((Rect.intersects(temp_line!!,symbol!!.rect) || symbol!!.rect.contains(temp_line!!))  && (PrePostProcessor.mClasses_symbols[symbol.classIndex] == "close_bracket" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "greater_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "less_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "open_bracket")){
-                            var finded_rec = symbol!!.rect
+                        if((Rect.intersects(temp_line!!, symbol.rect) || symbol.rect.contains(
+                                temp_line
+                            ))  && (PrePostProcessor.mClasses_symbols[symbol.classIndex] == "close_bracket" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "greater_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "less_than" || PrePostProcessor.mClasses_symbols[symbol.classIndex] == "open_bracket")){
+                            var finded_rec = symbol.rect
 
                             for (db_value in dbvaluesRect_full_lines){
-                                if (Rect.intersects(db_value!!,finded_rec) || finded_rec!!.contains(db_value!!)){
+                                if (Rect.intersects(db_value!!,finded_rec) || finded_rec.contains(
+                                        db_value
+                                    )){
 
 
                                     bone_results[fzvaluesRect_lines.indexOf(fzvaluesRect_lines[i])] = dbvalues_full[dbvaluesRect_full_lines.indexOf(db_value)].toInt()
@@ -1072,7 +1021,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //textv_results.text = air_results.joinToString(", ") + "\n" + bone_results.joinToString(", ")
 
         println(fzvalues.joinToString(", "))
         println(air_results.joinToString(", "))
@@ -1093,7 +1041,6 @@ class MainActivity : AppCompatActivity() {
             inputFeature0.loadBuffer(byteBuffer3)
             val outputs = model.process(inputFeature0)
             val outputFeature: FloatArray = outputs.outputFeature0AsTensorBuffer.floatArray
-            //println("Norma " + outputFeature[0].toString() + "\n" + "Mix " + outputFeature[1].toString() + "\n" + "Przewodzenie" + outputFeature[2].toString() + "\n" + "Odbirczy " + outputFeature[3].toString())
             var temp_max = outputFeature[0]
 
             for(i in 0..3){
@@ -1103,7 +1050,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             model.close()
-            //textv.text = names_class[temp_i]
 
         }catch(e : Exception){
             (Toast.makeText(this, "Klasyfikacja nieudana", Toast.LENGTH_LONG)).show()

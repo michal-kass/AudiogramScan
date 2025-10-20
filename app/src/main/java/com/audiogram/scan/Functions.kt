@@ -70,7 +70,7 @@ fun audiogram_bin(mBitmap : Bitmap) : Bitmap {
     val mat = Mat()
     Utils.bitmapToMat(mBitmap, mat)
     Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2GRAY)
-    Imgproc.threshold(mat, mat, 0.0, 255.0, Imgproc.THRESH_OTSU);
+    Imgproc.threshold(mat, mat, 0.0, 255.0, Imgproc.THRESH_OTSU)
     val newBitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888)
     Utils.matToBitmap(mat, newBitmap)
     return newBitmap
@@ -88,7 +88,7 @@ fun hlines(bitmap : Bitmap): Mat {
     var stdsrc = MatOfDouble()
     Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2GRAY)
 
-    Core.meanStdDev(mat, meansrc, stdsrc);
+    Core.meanStdDev(mat, meansrc, stdsrc)
     var v = meansrc.get(0,0)[0]
 
 
@@ -500,7 +500,7 @@ fun lines_processing_hz(Hlines: Mat, fzvaluesRect : Array<Rect?>, fzvaluesRect_l
         var similar_rec = mutableListOf<Rect>()
         var similar_rec_x = mutableListOf<Int>()
         for (rec_line in RectList){
-            if (Rect.intersects(rec_fz!!, rec_line) || rec_fz!!.contains(rec_line)){
+            if (Rect.intersects(rec_fz, rec_line) || rec_fz.contains(rec_line)){
 
                 similar_rec.add(rec_line)
                 similar_rec_x.add(rec_line.left)
@@ -509,14 +509,14 @@ fun lines_processing_hz(Hlines: Mat, fzvaluesRect : Array<Rect?>, fzvaluesRect_l
         similar_rec_x.sort()
         if (k == 0){
             var break_point = 0
-            var center = rec_fz?.centerX()
+            var center = rec_fz.centerX()
             if (rec_fz != null) {
                 for (i in 1..rec_fz.width()){
                     if (similar_rec_x.contains(center!!-i)){
                         continue
                     }
                     else{
-                        break_point = center!!-i
+                        break_point = center -i
                         break
                     }
                 }
@@ -600,7 +600,7 @@ fun lines_processing_db(Hlines: Mat, dbvaluesRect : Array<Rect?>, dbvaluesRect_l
             continue
         }
         for (rec_line in new_RectList) {
-            if (Rect.intersects(rec_db!!, rec_line) || rec_db!!.contains(rec_line)) {
+            if (Rect.intersects(rec_db, rec_line) || rec_db.contains(rec_line)) {
 
                 similar_rec.add(rec_line)
                 if (rec_line.height()<1) {
@@ -641,8 +641,8 @@ fun lines_processing_db_lengthen(dbvaluesRect_full_lines : Array<Rect?>){
     var max = 0
     for(element in dbvaluesRect_full_lines){
         if(element?.right != null){
-            if(element?.right!! > max){
-                max = element?.right!!
+            if(element.right!! > max){
+                max = element.right!!
             }
         }
     }
