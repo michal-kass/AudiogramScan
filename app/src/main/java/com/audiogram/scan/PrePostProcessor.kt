@@ -8,7 +8,7 @@ import kotlin.math.min
 
 class Result(@JvmField var classIndex: Int, @JvmField var score: Float, @JvmField var rect: Rect)
 
-// method PrePostProcessor is ported from https://github.com/pytorch/android-demo-app/blob/master/ObjectDetection/app/src/main/java/org/pytorch/demo/objectdetection/PrePostProcessor.java
+// object PrePostProcessor is ported from https://github.com/pytorch/android-demo-app/blob/master/ObjectDetection/app/src/main/java/org/pytorch/demo/objectdetection/PrePostProcessor.java
 object PrePostProcessor {
     // for yolov5 model, no need to apply MEAN and STD
     var NO_MEAN_RGB: FloatArray = floatArrayOf(0.0f, 0.0f, 0.0f)
