@@ -160,6 +160,8 @@ class MainActivity : AppCompatActivity() {
     private var mStartY: Float = 0f
     private var results_symbols = ArrayList<Result>()
 
+
+    // function aims to obtain the path to the file from the application resources and save it in local memory
     @Throws(IOException::class)
     fun assetFilePath(context: Context, assetName: String?): String {
         val file = File(context.filesDir, assetName)
@@ -180,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    // the main activity of the entire application
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -292,7 +294,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+        // button for switching images in debug mode
         buttonTest.setOnClickListener {
             button_switch.visibility = View.INVISIBLE
             textv.text = ""
@@ -320,7 +322,7 @@ class MainActivity : AppCompatActivity() {
 
         mProgressBar = findViewById<View>(R.id.progressBar) as ProgressBar
 
-
+        // button to launch the function responsible for determining how many audiograms have been found in the image
         mButtonDetect.setOnClickListener(View.OnClickListener {
             mButtonDetect.isEnabled = false
             mProgressBar.visibility = ProgressBar.VISIBLE
@@ -338,7 +340,7 @@ class MainActivity : AppCompatActivity() {
 
 
         })
-
+        // button for switching between audiograms from the left ear and right ear
         button_switch.setOnClickListener(View.OnClickListener {
             if (audiogram_list.size > 0) {
                 if (audiogram_index_selection == 0){
@@ -355,7 +357,7 @@ class MainActivity : AppCompatActivity() {
 
 
         })
-
+        // button initialising the process of digitising detected audiograms
         mButtonDetectSymbols.setOnClickListener(View.OnClickListener {
             textv_results.text = ""
             text_left_results.text = ""
@@ -403,7 +405,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val scanner = GmsDocumentScanning.getClient(options)
-
+        // function responsible for processing and saving the audiogram image in the phone memory
         fun handleActivityResult(activityResult: ActivityResult) {
 
             val resultCode = activityResult.resultCode
@@ -447,7 +449,7 @@ class MainActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
                 handleActivityResult(result)
             }
-
+        // button for restoring default settings after classifying audiograms
         findViewById<Button>(R.id.button2)
             .setOnClickListener {
                 text_left_results.text = ""
@@ -477,14 +479,8 @@ class MainActivity : AppCompatActivity() {
                     }
             }
 
-        button_classify.setOnClickListener{
-
-
-        }
-
-
     }
-
+    // function responsible for detecting audiograms from photographs
     fun audiogram_det(mBitmap : Bitmap): MutableList<Bitmap> {
         var audiograms = mutableListOf<Bitmap>()
 
@@ -614,6 +610,7 @@ class MainActivity : AppCompatActivity() {
         }
         return audiograms
     }
+    // the main function of the activity performing audiograms digitalisation
     fun analyze_audiograms(mBitmap: Bitmap, mImageView : ImageView, textv : TextView): Array<String> {
         var final_class = arrayOf("","")
         var results_symbols = ArrayList<Result>()
@@ -844,6 +841,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+    // function responsible for classifying audiograms
     fun classfiy(results_symbols : ArrayList<Result>, fzvaluesRect_lines : Array<Rect?>, dbvaluesRect_full_lines : Array<Rect?>): Array<String> {
         var air_results: Array<Int?> = arrayOfNulls(fzvalues.size)
         var bone_results: Array<Int?> = arrayOfNulls(fzvalues.size)

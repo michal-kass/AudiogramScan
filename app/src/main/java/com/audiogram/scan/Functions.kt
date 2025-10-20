@@ -66,6 +66,7 @@ val dbvalues_full = arrayOf(
     "120"
 )
 
+// function responsible for the binarisation of the audiogram image
 fun audiogram_bin(mBitmap : Bitmap) : Bitmap {
     val mat = Mat()
     Utils.bitmapToMat(mBitmap, mat)
@@ -76,6 +77,7 @@ fun audiogram_bin(mBitmap : Bitmap) : Bitmap {
     return newBitmap
 }
 
+// line detection function on an audiogram using the Hough method
 fun hlines(bitmap : Bitmap): Mat {
     var Hlines = Mat()
     val mat = Mat()
@@ -121,6 +123,7 @@ fun hlines(bitmap : Bitmap): Mat {
     return Hlines
 }
 
+// function that draws a rectangle on an image
 fun print_rec(rec_arr : Array<Rect?>, bmp2: Bitmap){
     val canvas = Canvas(bmp2)
     var mPaintRectangle = Paint()
@@ -132,12 +135,13 @@ fun print_rec(rec_arr : Array<Rect?>, bmp2: Bitmap){
 
     }
 }
-
+// function that checks whether an element belongs to an array
 fun find(a: Array<String>, element: String): Boolean {
     val found = Arrays.stream(a).anyMatch { t -> t == element }
     return found
 }
 
+// function responsible for determining linear regression
 fun linear_reg(arr: Array<Rect?>): List<Double> {
     var non_null_values = 0
     for (elemnt in arr) {
@@ -165,7 +169,7 @@ fun linear_reg(arr: Array<Rect?>): List<Double> {
     return listOf(slope, yIntercept)
 
 }
-
+// function responsible for filling in missing location in hearing level based on approximation
 fun filling_gaps_db(dbvaluesRect : Array<Rect?>, bmp2 : Bitmap) {
     var coun = 0
     for (i in dbvaluesRect.indices) {
@@ -280,6 +284,8 @@ fun filling_gaps_db(dbvaluesRect : Array<Rect?>, bmp2 : Bitmap) {
 
     }
 }
+
+// function responsible for filling in missing location in frequences based on approximation
 fun filling_gaps_fz(fzvaluesRect: Array<Rect?>, bmp2: Bitmap) {
 
 
@@ -436,6 +442,8 @@ fun filling_gaps_fz(fzvaluesRect: Array<Rect?>, bmp2: Bitmap) {
     }
 
 }
+
+// function responsible for determining intermediate hearing levels on an audiogram, e.g. 15, 25, 35
 fun fill_db_values(dbvaluesRect: Array<Rect?>, dbvaluesRect_full: Array<Rect?>, bmp2: Bitmap) {
     var count_null = 0
     for (element in dbvaluesRect) {
@@ -474,6 +482,8 @@ fun fill_db_values(dbvaluesRect: Array<Rect?>, dbvaluesRect_full: Array<Rect?>, 
 
 }
 
+
+// function responsible for assigning lines detected using the Hough transform method to specific frequencies
 fun lines_processing_hz(Hlines: Mat, fzvaluesRect : Array<Rect?>, fzvaluesRect_lines : Array<Rect?>, bmp2: Bitmap){
     val canvas = Canvas(bmp2)
     var mPaintRectangle = Paint()
@@ -562,6 +572,8 @@ fun lines_processing_hz(Hlines: Mat, fzvaluesRect : Array<Rect?>, fzvaluesRect_l
 
 
 }
+
+// function responsible for assigning lines detected using the Hough transform method to specific hearing level
 fun lines_processing_db(Hlines: Mat, dbvaluesRect : Array<Rect?>, dbvaluesRect_lines : Array<Rect?>, bmp2: Bitmap) {
     val canvas = Canvas(bmp2)
     var mPaintRectangle = Paint()
@@ -637,6 +649,7 @@ fun lines_processing_db(Hlines: Mat, dbvaluesRect : Array<Rect?>, dbvaluesRect_l
     }
 }
 
+// function responsible for extending the lines corresponding to hearing levels to the length of the audiogram
 fun lines_processing_db_lengthen(dbvaluesRect_full_lines : Array<Rect?>){
     var max = 0
     for(element in dbvaluesRect_full_lines){
