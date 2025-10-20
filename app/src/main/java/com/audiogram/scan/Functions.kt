@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.util.Log
 import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -174,17 +175,12 @@ fun filling_gaps_db(dbvaluesRect : Array<Rect?>, bmp2 : Bitmap) {
     }
 
 
-//println(dbvalues.joinToString(", "))
-//println(dbvaluesRect.joinToString(", "))
-//val bmp3: Bitmap = mBitmap.copy(bmp2.getConfig(), true)
     val canvas = Canvas(bmp2)
     var mPaintRectangle = Paint()
     mPaintRectangle.strokeWidth = 4f
     mPaintRectangle.style = Paint.Style.STROKE
     mPaintRectangle.color = Color.MAGENTA
 
-// co jesli mamy x x x v x v, co zrobic z tymi pierszymi x
-// co jeśli tylko 0 i ostatni sie zrobil
     if (coun >= 2) {
         for (i in dbvaluesRect.indices) {
             if (dbvaluesRect[i] == null && i != dbvaluesRect.size - 1 && i != 0) {
@@ -200,7 +196,6 @@ fun filling_gaps_db(dbvaluesRect : Array<Rect?>, bmp2 : Bitmap) {
                         (dbvaluesRect[i + 1]?.bottom!! - dbvaluesRect[i - 1]?.bottom!!) / 2 + dbvaluesRect[i - 1]?.bottom!!
                     var newRect = Rect(left, top, right, bottom)
                     canvas.drawRect(newRect, mPaintRectangle)
-                    //Glide.with(this).load(bmp3).into(mImageView)
                     dbvaluesRect[i] = newRect
                 }
                 if (dbvaluesRect[i - 1] != null && dbvaluesRect[i + 1] == null) {
@@ -214,8 +209,7 @@ fun filling_gaps_db(dbvaluesRect : Array<Rect?>, bmp2 : Bitmap) {
                             count++
                         }
                     }
-                    // println(find)
-                    //println(count)
+
                     if (find != -1) {
                         var left =
                             (dbvaluesRect[find]?.left!! - dbvaluesRect[i - 1]?.left!!) / (count + 2) + dbvaluesRect[i - 1]?.left!!
@@ -244,7 +238,6 @@ fun filling_gaps_db(dbvaluesRect : Array<Rect?>, bmp2 : Bitmap) {
                         count++
                     }
                 }
-                //println("test")
                 mPaintRectangle.color = Color.MAGENTA
                 if (find != -1) {
                     var left =
@@ -280,11 +273,10 @@ fun filling_gaps_db(dbvaluesRect : Array<Rect?>, bmp2 : Bitmap) {
             }
 
         }
-//Glide.with(this).load(bmp2).into(mImageView)
 
     }
     else{
-        //(Toast.makeText(this, "OCV failed in DB, only " + coun.toString(), Toast.LENGTH_LONG)).show()
+        Log.d("TAG", "Error in filling gaps db")
 
     }
 }
@@ -316,7 +308,6 @@ fun filling_gaps_fz(fzvaluesRect: Array<Rect?>, bmp2: Bitmap) {
                     (fzvaluesRect[i + 1]?.bottom!! - fzvaluesRect[i - 1]?.bottom!!) / 2 + fzvaluesRect[i - 1]?.bottom!!
                 var newRect = Rect(left, top, right, bottom)
                 canvas.drawRect(newRect, mPaintRectangle)
-                //Glide.with(this).load(bmp3).into(mImageView)
                 fzvaluesRect[i] = newRect
             }
             if (i != fzvaluesRect.size - 1 && fzvaluesRect[i - 1] != null && fzvaluesRect[i + 1] == null) {
@@ -501,7 +492,6 @@ fun lines_processing_hz(Hlines: Mat, fzvaluesRect : Array<Rect?>, fzvaluesRect_l
     }
     mPaintRectangle.color = Color.WHITE
 
-    //println(RectList.size)
     var k = 0
     for (rec_fz in fzvaluesRect){
         if(rec_fz == null){
@@ -509,7 +499,6 @@ fun lines_processing_hz(Hlines: Mat, fzvaluesRect : Array<Rect?>, fzvaluesRect_l
         }
         var similar_rec = mutableListOf<Rect>()
         var similar_rec_x = mutableListOf<Int>()
-        //println(rec_fz?.centerX())
         for (rec_line in RectList){
             if (Rect.intersects(rec_fz!!, rec_line) || rec_fz!!.contains(rec_line)){
 
@@ -643,8 +632,6 @@ fun lines_processing_db(Hlines: Mat, dbvaluesRect : Array<Rect?>, dbvaluesRect_l
             k++
         }
         else{
-            //(Toast.makeText(this, "Proszę wykonać zdjęcie ponownie", Toast.LENGTH_LONG)).show()
-            //break
             k++
         }
     }
