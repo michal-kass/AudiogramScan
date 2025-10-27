@@ -368,29 +368,27 @@ class MainActivity : AppCompatActivity() {
             mImageView.visibility = ProgressBar.INVISIBLE
             mImageView2.visibility = ProgressBar.INVISIBLE
 
-            runOnUiThread {
-                mProgressBar.visibility = ProgressBar.VISIBLE
+            mProgressBar.visibility = ProgressBar.VISIBLE
 
-                if (audiogram_list.size == 1){
-                    mImageView.setImageBitmap(audiogram_list[0])
-                    var audiogram_result =
-                        analyze_audiograms(audiogram_list[0], mImageView, text_right_results)
-                }
-                if (audiogram_list.size > 1) {
-
-                    mImageView.setImageBitmap(audiogram_list[0])
-                    var audiogram_result =
-                        analyze_audiograms(audiogram_list[0], mImageView, text_right_results)
-
-
-                    mImageView2.setImageBitmap(audiogram_list[1])
-                    var audiogram_result2 =
-                        analyze_audiograms(audiogram_list[1], mImageView2, text_left_results)
-                }
-                mProgressBar.visibility = ProgressBar.INVISIBLE
-                mButtonDetectSymbols.isEnabled = false
-
+            if (audiogram_list.size == 1){
+                mImageView.setImageBitmap(audiogram_list[0])
+                var audiogram_result =
+                    analyze_audiograms(audiogram_list[0], mImageView, text_right_results)
             }
+            if (audiogram_list.size > 1) {
+
+                mImageView.setImageBitmap(audiogram_list[0])
+                var audiogram_result =
+                    analyze_audiograms(audiogram_list[0], mImageView, text_right_results)
+
+
+                mImageView2.setImageBitmap(audiogram_list[1])
+                var audiogram_result2 =
+                    analyze_audiograms(audiogram_list[1], mImageView2, text_left_results)
+            }
+            mProgressBar.visibility = ProgressBar.INVISIBLE
+            mButtonDetectSymbols.isEnabled = false
+
 
 
         })
@@ -425,21 +423,6 @@ class MainActivity : AppCompatActivity() {
                         pages[0].imageUri
                     )
                     mBitmap = bitmap
-                }
-
-                result.pages?.let { uri ->
-                    val fos = FileOutputStream(File(filesDir, "audiogram" + ".jpeg"))
-                    contentResolver.openInputStream(uri[0].imageUri)?.use {
-                        it.copyTo(fos)
-                    }
-
-                }
-
-                result.pdf?.let { pdf ->
-                    val fos = FileOutputStream(File(filesDir, "audiogram" + ".pdf"))
-                    contentResolver.openInputStream(pdf.uri)?.use {
-                        it.copyTo(fos)
-                    }
                 }
 
             }
@@ -527,85 +510,59 @@ class MainActivity : AppCompatActivity() {
             mStartY
         )
 
-        runOnUiThread {
-            mButtonDetect.isEnabled = true
-            mButtonDetect.text = "Deteced"
-            mProgressBar.visibility = ProgressBar.INVISIBLE
+        mButtonDetect.isEnabled = true
+        mButtonDetect.text = "Detected"
+        mProgressBar.visibility = ProgressBar.INVISIBLE
 
-            if (results.size == 0) {
+        if (results.size == 0) {
 
-            } else {
-                if (results.size == 1){
-                    var rec = results[0].rect
-                    newBitmap = Bitmap.createBitmap(
-                        mBitmap,
-                        rec.left,
-                        rec.top,
-                        rec.width(),
-                        rec.height()
-                    )
-                    audiograms.add(newBitmap)
+        } else {
+            if (results.size == 1){
+                var rec = results[0].rect
+                newBitmap = Bitmap.createBitmap(
+                    mBitmap,
+                    rec.left,
+                    rec.top,
+                    rec.width(),
+                    rec.height()
+                )
+                audiograms.add(newBitmap)
 
+            }
+            if (results.size == 2){
+
+                var left_rec = Rect()
+                var right_rec = Rect()
+
+                if(results[0].rect.left < results[1].rect.left){
+                    left_rec = results[0].rect
+                    right_rec = results[1].rect
                 }
-                if (results.size == 2){
-
-                    var left_rec = Rect()
-                    var right_rec = Rect()
-
-                    if(results[0].rect.left < results[1].rect.left){
-                        left_rec = results[0].rect
-                        right_rec = results[1].rect
-                    }
-                    else{
-                        left_rec = results[1].rect
-                        right_rec = results[0].rect
-                    }
-
-                    newBitmap_left = Bitmap.createBitmap(
-                        mBitmap,
-                        left_rec.left - 5,
-                        left_rec.top,
-                        left_rec.width() + (left_rec.width() * 0.10).toInt(),
-                        left_rec.height()
-                    )
-                    newBitmap_right = Bitmap.createBitmap(
-                        mBitmap,
-                        right_rec.left - (right_rec.width() * 0.01).toInt(),
-                        right_rec.top,
-                        right_rec.width() + (right_rec.width() * 0.10).toInt(),
-                        right_rec.height() + + (left_rec.height() * 0.05).toInt()
-                    )
-
-                    audiograms.add(newBitmap_left)
-                    audiograms.add(newBitmap_right)
-
-
-
-
-                    val path_left = (File(filesDir, UUID.randomUUID().toString()
-                            +"_left"+ ".jpeg"))
-                    val path_right = (File(filesDir, UUID.randomUUID().toString()
-                            +"_right"+ ".jpeg"))
-                    try {
-                        val fileOutputStream = FileOutputStream(path_left)
-                        newBitmap_left.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-                        fileOutputStream.close()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-
-                    try {
-                        val fileOutputStream = FileOutputStream(path_right)
-                        newBitmap_right.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-                        fileOutputStream.close()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-
-
-                    mResultView.invalidate()
-                    mResultView.visibility = View.VISIBLE
+                else{
+                    left_rec = results[1].rect
+                    right_rec = results[0].rect
                 }
+
+                newBitmap_left = Bitmap.createBitmap(
+                    mBitmap,
+                    left_rec.left - 5,
+                    left_rec.top,
+                    left_rec.width() + (left_rec.width() * 0.10).toInt(),
+                    left_rec.height()
+                )
+                newBitmap_right = Bitmap.createBitmap(
+                    mBitmap,
+                    right_rec.left - (right_rec.width() * 0.01).toInt(),
+                    right_rec.top,
+                    right_rec.width() + (right_rec.width() * 0.10).toInt(),
+                    right_rec.height() + + (left_rec.height() * 0.05).toInt()
+                )
+
+                audiograms.add(newBitmap_left)
+                audiograms.add(newBitmap_right)
+
+                mResultView.invalidate()
+                mResultView.visibility = View.VISIBLE
             }
         }
         return audiograms
@@ -696,144 +653,142 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        runOnUiThread {
-            mButtonDetectSymbols.isEnabled = true
-            mProgressBar.visibility = ProgressBar.INVISIBLE
+        mButtonDetectSymbols.isEnabled = true
+        mProgressBar.visibility = ProgressBar.INVISIBLE
 
-            bmp2 = mBitmap.copy(mBitmap.config, true)
-            results_symbols = results
+        bmp2 = mBitmap.copy(mBitmap.config, true)
+        results_symbols = results
 
-            val canvas = Canvas(bmp2)
-            var mPaintRectangle = Paint()
-            mPaintRectangle.strokeWidth = 3f
-            mPaintRectangle.style = Paint.Style.STROKE
-            mPaintRectangle.color = Color.WHITE
+        val canvas = Canvas(bmp2)
+        var mPaintRectangle = Paint()
+        mPaintRectangle.strokeWidth = 3f
+        mPaintRectangle.style = Paint.Style.STROKE
+        mPaintRectangle.color = Color.WHITE
 
-            val image = InputImage.fromBitmap(mBitmap, 0)
-            val result = recognizer.process(image)
-                .addOnSuccessListener { visionText ->
-                    val resultText = visionText.text
-                    for (block in visionText.textBlocks) {
-                        val blockText = block.text
-                        val blockCornerPoints = block.cornerPoints
-                        val blockFrame = block.boundingBox
-                        for (line in block.lines) {
-                            val lineText = line.text
-                            val lineCornerPoints = line.cornerPoints
-                            val lineFrame = line.boundingBox
-                            for (element in line.elements) {
-                                val elementText = element.text
-                                if (find(dbvalues, elementText) == true) {
-                                    val index = dbvalues.indexOf(elementText)
-                                    if ( dbvaluesRect[index] == null) {
-                                        dbvaluesRect[index] = element.boundingBox
-                                        if (element.boundingBox != null) {
-                                            canvas.drawRect(element.boundingBox!!, mPaintRectangle)
-                                        }
+        val image = InputImage.fromBitmap(mBitmap, 0)
+        val result = recognizer.process(image)
+            .addOnSuccessListener { visionText ->
+                val resultText = visionText.text
+                for (block in visionText.textBlocks) {
+                    val blockText = block.text
+                    val blockCornerPoints = block.cornerPoints
+                    val blockFrame = block.boundingBox
+                    for (line in block.lines) {
+                        val lineText = line.text
+                        val lineCornerPoints = line.cornerPoints
+                        val lineFrame = line.boundingBox
+                        for (element in line.elements) {
+                            val elementText = element.text
+                            if (find(dbvalues, elementText) == true) {
+                                val index = dbvalues.indexOf(elementText)
+                                if ( dbvaluesRect[index] == null) {
+                                    dbvaluesRect[index] = element.boundingBox
+                                    if (element.boundingBox != null) {
+                                        canvas.drawRect(element.boundingBox!!, mPaintRectangle)
                                     }
-
-                                }
-                                if (find(fzvalues, elementText) == true) {
-                                    val index = fzvalues.indexOf(elementText)
-                                    if (fzvaluesRect[index] == null) {
-                                        fzvaluesRect[index] = element.boundingBox
-                                        if (element.boundingBox != null) {
-                                            canvas.drawRect(element.boundingBox!!, mPaintRectangle)
-                                        }
-                                    }
-
                                 }
 
                             }
-                        }
-                    }
+                            if (find(fzvalues, elementText) == true) {
+                                val index = fzvalues.indexOf(elementText)
+                                if (fzvaluesRect[index] == null) {
+                                    fzvaluesRect[index] = element.boundingBox
+                                    if (element.boundingBox != null) {
+                                        canvas.drawRect(element.boundingBox!!, mPaintRectangle)
+                                    }
+                                }
 
-                    for (i in results.indices) {
-                        if (results[i].classIndex == 0){
-                            mPaintRectangle.color = Color.RED
-                            canvas.drawRect(results[i].rect, mPaintRectangle)
-                        }
-                        else{
-                            mPaintRectangle.color = Color.WHITE
-                            canvas.drawRect(results[i].rect, mPaintRectangle)
-                        }
-                        mPaintRectangle.color = Color.WHITE
-
-                    }
-
-                    for (i in results_numbers.indices) {
-                        mPaintRectangle.color = Color.WHITE
-                        var value = PrePostProcessor.mClasses_numbers[results_numbers[i].classIndex]
-                        if (find(dbvalues, value) == true){
-                            val index = dbvalues.indexOf(value)
-                            dbvaluesRect[index] = results_numbers[i].rect
-                        }
-                        if (find(fzvalues, value) == true){
-                            val index = fzvalues.indexOf(value)
-                            if (fzvaluesRect[index] == null) {
-                                canvas.drawRect(results_numbers[i].rect, mPaintRectangle)
-                                fzvaluesRect[index] = results_numbers[i].rect
                             }
+
                         }
                     }
+                }
 
-                    var Hlines = hlines(mBitmap)
+                for (i in results.indices) {
+                    if (results[i].classIndex == 0){
+                        mPaintRectangle.color = Color.RED
+                        canvas.drawRect(results[i].rect, mPaintRectangle)
+                    }
+                    else{
+                        mPaintRectangle.color = Color.WHITE
+                        canvas.drawRect(results[i].rect, mPaintRectangle)
+                    }
+                    mPaintRectangle.color = Color.WHITE
 
-                    filling_gaps_db(dbvaluesRect,bmp2)
+                }
 
-                    filling_gaps_fz(fzvaluesRect,bmp2)
-
-                    fill_db_values(dbvaluesRect, dbvaluesRect_full,bmp2)
-                    lines_processing_hz(Hlines,fzvaluesRect,fzvaluesRect_lines, bmp2)
-                    lines_processing_db(Hlines,dbvaluesRect ,dbvaluesRect_lines, bmp2)
-
-                    filling_gaps_fz(fzvaluesRect_lines,bmp2)
-
-                    filling_gaps_db(dbvaluesRect_lines,bmp2)
-
-
-                    fill_db_values(dbvaluesRect_lines, dbvaluesRect_full_lines, bmp2)
-                    lines_processing_db_lengthen(dbvaluesRect_full_lines)
-
-
-                    Glide.with(this).load(bmp2).into(mImageView)
-
-                    try {
-                         final_class =
-                            classfiy(results_symbols, fzvaluesRect_lines, dbvaluesRect_full_lines)
-
-                        println(final_class)
-                        if (final_class[0] != ""){
-                        textv.text = final_class[1].replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.getDefault()
-                            ) else it.toString()
-                        } + " Ear:" + "\n" + final_class[0]
-                            }
-                        else {
-                            textv.text = final_class[1] + " ear:" + "Could not process an audiogram in the photograph. Please take the photograph in good lighting conditions and make sure that the entire audiogram is visible."
+                for (i in results_numbers.indices) {
+                    mPaintRectangle.color = Color.WHITE
+                    var value = PrePostProcessor.mClasses_numbers[results_numbers[i].classIndex]
+                    if (find(dbvalues, value) == true){
+                        val index = dbvalues.indexOf(value)
+                        dbvaluesRect[index] = results_numbers[i].rect
+                    }
+                    if (find(fzvalues, value) == true){
+                        val index = fzvalues.indexOf(value)
+                        if (fzvaluesRect[index] == null) {
+                            canvas.drawRect(results_numbers[i].rect, mPaintRectangle)
+                            fzvaluesRect[index] = results_numbers[i].rect
                         }
-                    }catch(exception: Exception){
-                        (Toast.makeText(this, "Classification failed", Toast.LENGTH_LONG)).show()
+                    }
+                }
+
+                var Hlines = hlines(mBitmap)
+
+                filling_gaps_db(dbvaluesRect,bmp2)
+
+                filling_gaps_fz(fzvaluesRect,bmp2)
+
+                fill_db_values(dbvaluesRect, dbvaluesRect_full,bmp2)
+                lines_processing_hz(Hlines,fzvaluesRect,fzvaluesRect_lines, bmp2)
+                lines_processing_db(Hlines,dbvaluesRect ,dbvaluesRect_lines, bmp2)
+
+                filling_gaps_fz(fzvaluesRect_lines,bmp2)
+
+                filling_gaps_db(dbvaluesRect_lines,bmp2)
+
+
+                fill_db_values(dbvaluesRect_lines, dbvaluesRect_full_lines, bmp2)
+                lines_processing_db_lengthen(dbvaluesRect_full_lines)
+
+
+                Glide.with(this).load(bmp2).into(mImageView)
+
+                try {
+                     final_class =
+                        classfiy(results_symbols, fzvaluesRect_lines, dbvaluesRect_full_lines)
+
+                    println(final_class)
+                    if (final_class[0] != ""){
+                    textv.text = final_class[1].replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(
+                            Locale.getDefault()
+                        ) else it.toString()
+                    } + " Ear:" + "\n" + final_class[0]
+                        }
+                    else {
                         textv.text = final_class[1] + " ear:" + "Could not process an audiogram in the photograph. Please take the photograph in good lighting conditions and make sure that the entire audiogram is visible."
-
                     }
+                }catch(exception: Exception){
+                    (Toast.makeText(this, "Classification failed", Toast.LENGTH_LONG)).show()
+                    textv.text = final_class[1] + " ear:" + "Could not process an audiogram in the photograph. Please take the photograph in good lighting conditions and make sure that the entire audiogram is visible."
 
-
-                    }
-                .addOnFailureListener { e ->
                 }
 
 
+                }
+            .addOnFailureListener { e ->
+            }
 
 
 
 
 
-            mPaintRectangle.color = Color.WHITE
 
 
-        }
+        mPaintRectangle.color = Color.WHITE
+
+
         var fz_lines = fzvaluesRect_lines
         var db_lines = dbvaluesRect_full_lines
         var symbols_array = results_symbols
