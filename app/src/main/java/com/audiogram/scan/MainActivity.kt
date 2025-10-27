@@ -403,7 +403,8 @@ class MainActivity : AppCompatActivity() {
 
 
         val scanner = GmsDocumentScanning.getClient(options)
-        // function responsible for processing and saving the audiogram image in the phone memory
+        
+        // function responsible for processing and saving the hearing test result
         fun handleActivityResult(activityResult: ActivityResult) {
 
             val resultCode = activityResult.resultCode
